@@ -60,10 +60,8 @@ public class Tokeniser {
      * To be completed
      */
     private Token next() throws IOException, UnrecognizedCharacterException {
-
         int line = scanner.getLine();
         int column = scanner.getColumn();
-
         // get the next character
         char c = scanner.next();
 
@@ -73,37 +71,44 @@ public class Tokeniser {
 
         //operators, comparisons, logical_operators, struct member access
         if (isOperatorStartChar(c)) {
-            if(isOperatorChar(c) && c != '/')
+            if(isOperatorChar(c) && c != '/') {
+                clearTokenStringBuilder();
                 return new Token(singleOperatorTokenClassMap.get(c), "", line, column);
-
+            }
             if (c == '/') {
                 if(isComment()){
                     throwAwayComment();
                     return next();
                 }
+                clearTokenStringBuilder();
                 return new Token(singleOperatorTokenClassMap.get(c), "", line, column);
             }
 
             if (c == '&'){
                 expectFullString("&&", c);
+                clearTokenStringBuilder();
                 return new Token(TokenClass.AND, "", line, column);
             }
 
             if (c == '|'){
                 expectFullString("||", c);
+                clearTokenStringBuilder();
                 return new Token(TokenClass.OR, "", line, column);
             }
 
             if (c == '!'){
                 expectFullString("!=", c);
+                clearTokenStringBuilder();
                 return new Token(TokenClass.NE, "",line,column);
             }
 
             if (c == '='){
                 boolean matched = isFirstParamToken("=", "==", c);
                 if(matched){
+                    clearTokenStringBuilder();
                     return new Token(TokenClass.ASSIGN, "",line,column);
                 } else {
+                    clearTokenStringBuilder();
                     return new Token(TokenClass.EQ, "",line,column);
                 }
             }
@@ -111,8 +116,10 @@ public class Tokeniser {
             if (c == '<'){
                 boolean matched = isFirstParamToken("<","<=", c);
                 if(matched){
+                    clearTokenStringBuilder();
                     return new Token(TokenClass.LT, "",line,column);
                 } else {
+                    clearTokenStringBuilder();
                     return new Token(TokenClass.LE, "",line,column);
                 }
             }
@@ -120,8 +127,10 @@ public class Tokeniser {
             if (c == '>'){
                 boolean matched = isFirstParamToken(">",">=", c);
                 if(matched){
+                    clearTokenStringBuilder();
                     return new Token(TokenClass.GT,"",line,column);
                 } else {
+                    clearTokenStringBuilder();
                     return new Token(TokenClass.GE,"",line,column);
                 }
             }
@@ -130,17 +139,20 @@ public class Tokeniser {
 
 
         if (c == '.') {
+            clearTokenStringBuilder();
             return new Token(TokenClass.DOT, "", line, column);
         }
 
         // delimiters
         if (isDelimiterChar(c)) {
+            clearTokenStringBuilder();
             return new Token(delimitersTokenClassMap.get(c), "", line, column);
         }
 
         //include
         if (isInclude(c)) {
             expectFullString("#include", c);
+            clearTokenStringBuilder();
             return new Token(TokenClass.INCLUDE, "", line, column);
         }
 
@@ -215,22 +227,31 @@ public class Tokeniser {
     private Token handleIdentifierOrKeyword(String token, int line, int column) {
         switch (token) {
             case "int":
+                clearTokenStringBuilder();
                 return new Token(TokenClass.INT, line, column);
             case "void":
+                clearTokenStringBuilder();
                 return new Token(TokenClass.VOID, line, column);
             case "char":
+                clearTokenStringBuilder();
                 return new Token(TokenClass.CHAR, line, column);
             case "if":
+                clearTokenStringBuilder();
                 return new Token(TokenClass.IF, line, column);
             case "else":
+                clearTokenStringBuilder();
                 return new Token(TokenClass.ELSE, line, column);
             case "while":
+                clearTokenStringBuilder();
                 return new Token(TokenClass.WHILE, line, column);
             case "return":
+                clearTokenStringBuilder();
                 return new Token(TokenClass.RETURN, line, column);
             case "struct":
+                clearTokenStringBuilder();
                 return new Token(TokenClass.STRUCT, line, column);
             case "sizeof":
+                clearTokenStringBuilder();
                 return new Token(TokenClass.SIZEOF, line, column);
             default:
                 return new Token(TokenClass.IDENTIFIER, getTokenString(), line, column);
