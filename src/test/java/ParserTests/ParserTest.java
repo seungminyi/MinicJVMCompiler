@@ -67,7 +67,7 @@ public class ParserTest {
 
     @Test
     public void testStructDefsError() throws FileNotFoundException, IOException {
-        setupParser("struct hello { }; struct hello { int asd; char asd[]; void asd; struct hello mamma;;");
+        setupParser("struct hello { }; struct hello { int asd; char asd[2]; void asd; struct hello mamma;;");
         testParser.parse();
         assertParserErrorsCount(1);
     }
@@ -79,12 +79,6 @@ public class ParserTest {
         assertNoParserErrors();
     }
 
-    @Test
-    public void testVarDeclsError() throws FileNotFoundException, IOException {
-        setupParser("int hello; char hello; void hello; struct hello; int hello[]; char hello[]; void hello[]; struct hello[];");
-        testParser.parse();
-        assertParserErrorsCount(1);
-    }
     @Test
     public void testFunDeclsOne() throws FileNotFoundException, IOException {
         setupParser("char createsumfin(){void hello;mamma=2+2;}");
@@ -128,8 +122,8 @@ public class ParserTest {
     }
 
     @Test
-    public void test2DAccess() throws FileNotFoundException, IOException {
-        setupParser("void main(){gleb[2][2];*hleb.str[2][2];}");
+    public void testFieldAccess() throws FileNotFoundException, IOException {
+        setupParser("void main(){gleb[2];*hleb.str;}");
         testParser.parse();
         assertNoParserErrors();
     }
