@@ -21,7 +21,7 @@ import java.io.StringWriter;
  *     moreover Tokeniser must provide a public method getErrorCount
  *     which returns the total number of lexing errors.
  */
-public class                Main {
+public class Main {
 	private static final int FILE_NOT_FOUND = 2;
     private static final int MODE_FAIL      = 254;
     private static final int LEXER_FAIL     = 250;
@@ -40,7 +40,7 @@ public class                Main {
     }
 
     public static void main(String[] args) {
-        args = new String[]{"-java.parser", "tests/fibonacci.c", "tests/test"};
+        //args = new String[]{"-java.parser", "tests/fibonacci.c", "tests/test"};
 
         if (args.length != 3)
             usage();
@@ -57,7 +57,6 @@ public class                Main {
 
         File inputFile = new File(args[1]);
         File outputFile = new File(args[2]);
-
         Scanner scanner;
         try {
             scanner = new Scanner(inputFile);

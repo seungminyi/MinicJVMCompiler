@@ -37,7 +37,7 @@ public class MainPart1 {
     }
 
     public static void main(String[] args) throws URISyntaxException {
-        System.out.println(System.getProperty("user.dir") + args[1]);
+        //args = new String[]{"-java.parser", "tests/fibonacci.c", "tests"};
         if (args.length != 3)
             usage();
 
@@ -62,7 +62,6 @@ public class MainPart1 {
                 usage();
                 break;
         }
-
         URL resource = MainPart1.class.getClassLoader().getResource(args[1]);
         if (resource == null) {
             throw new IllegalArgumentException("file not found!");
